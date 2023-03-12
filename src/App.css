@@ -1,6 +1,89 @@
+.App {
+  background-color: white;
+}
+
+.Auth-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+margin-left: -100px;
+margin-top: -100px;
+  width: 1922px;
+  height:1005px;
+  background-image: url("./Images/loginpage.jpg");
+  
+}
+
+.Auth-form {
+  width: 420px;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  border-radius: 15px;
+  height:50%;
+  opacity: 70%;
+  background-color: rgb(192, 174, 211);
+}
+
+.Auth-form-content {
+  padding-left: 12%;
+  padding-right: 12%;
+}
+
+.Auth-form-title {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 24px;
+  color: rgb(34, 34, 34);
+  font-weight: 800;
+}
+@media (max-width: 768px) {
+  .Auth-form-container {
+    margin-left: 0;
+    margin-top: 0;
+    width: 100%;
+      background-image: url("./Images/loginpage.jpg");
+  }
+  
+  .Auth-form {
+    width: 80%;
+    margin: 0 auto;
+    box-shadow: none;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 0;
+    height: auto;
+    opacity: 100%;
+    background-color: rgb(192, 174, 211);
+  }
+  
+  .Auth-form-content {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  
+  .Auth-form-title {
+    font-size: 20px;
+  }
+}
+
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+.Backimg{
+  background-color: #ededf6;
+  margin-left: 130px;
+  height:100%;
+  border-radius: 10px;
+}
+
 *:focus {
   outline: none;
 }
+
 
 .table-wrapper {
   width: 90%;
@@ -428,6 +511,7 @@ input[type='radio']:checked:after {
   border: 1px solid gray;
   width: 200px;
   height: 200px;
+  margin-left: 100px;
 }
 
 @media screen and (max-width: 1000px) {

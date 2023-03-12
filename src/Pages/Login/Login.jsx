@@ -1,100 +1,110 @@
-import { Component } from 'react'
-import SessionContext from '../../components/session/SessionContext'
-import LoginComponent from '../../components/LoginComponent'
-import { setCookie } from '../../cookie'
+import React, { useState } from "react";
+import axios from "axios";
+import API from '../../api';
 
-export default class Login extends Component {
 
-    state = {
-        name: "",
-        password: "",
-        commentLogin: ""
-    }
+const LoginForm = ({ onLogin, onRegister }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
 
-    handleLogin = async (event) => {
-        event.preventDefault();
+  function handleLogin(event) {
+    event.preventDefault();
+    const { email, password } = event.target.elements;
+  
+    
+    axios.post("/login", { email: email.value, password: password.value })
+      .then(({ data: { access_token } }) => {
+        console.log(access_token);
+        onLogin(access_token);
+      })
+      .catch(err => {
+        console.log(err)
+        console.log(err.message)
+   })
+  }
+  
 
-        const { name, password, commentLogin } = this.state;
-        const { actions: { updateSession } } = this.context;
-        try {
-            const url = 'http://localhost:8000/login';
-            const body = JSON.stringify({ name, password });
-            const headers = { 'Content-Type': 'application/json' };
+  const handleRegister = (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
 
-            const response = await fetch(url, { method: "POST", headers, body });
-            const answer = await response.json();
+    axios
+      .post("http://127.0.0.1:8000/api/register", formData)
+      .then((response) => {
+        // handle success response
+        console.log(response.data);
+        onRegister(response.data.access_token);
+      })
+      .catch(err => {
+        console.log(err)
+        console.log(err.message)
+   })
+  };
 
-            if (answer.success) {
-                setCookie('id', answer.result.id, 30);
-                setCookie('token', answer.result.token, 30);
-                if (answer.result.RoleID === 0) {
-                    setCookie('RoleID', answer.result.RoleID.toString(), 30)
-                } else if (answer.result.RoleID === 1) {
-                    setCookie('RoleID', answer.result.RoleID.toString(), 30)
-                }
-                updateSession({ user: answer.result })
-            } else {
+  const toggleForm = () => {
+    setIsRegistering(!isRegistering);
+  };
 
-                this.setState({ error_message: answer.message, password: "", commentLogin: "Incorrect Username or Password" });
-            }
-        } catch (err) {
-            this.setState({ error_message: err.message, password: "", commentLogin: "Incorrect Username or Password" });
-        }
-    }
-
-    handleChange = (e) => {
-        let { name, value } = e.target;
-        this.setState({ [name]: value });
-    }
-
-    nextPath(path) {
-        this.props.history.push(path);
-    }
-
-    render() {
-        let { name, password, commentLogin } = this.state;
-        console.log(commentLogin)
-        return (
-            <div className="container">
-                <div className="loginHeader">
-                    <button
-                        className="home-button L-Button"
-                        onClick={() => this.nextPath(`/`)}
-                    >
-                        <i className="fa fa-home colordelete"></i> Home
-                    </button>
-                </div>
-                <div className="diccs">
-                    <span>Welcome to Al Manara School Registration System</span>
-                    <br /><br /><br />
-                    <span>LOGIN</span>
-                </div>
-                <div className="loginRect">
-                    <LoginComponent
-                        typeButton="submit"
-                        onSubmit={this.handleLogin}
-
-                        placeholderUser="Username"
-                        typeUser="text"
-                        nameUser="name"
-                        valueUser={name}
-                        placeholderPass="Password"
-                        typePass="password"
-                        namePass="password"
-                        valuePass={password}
-                        onChange={this.handleChange}
-
-                        className="input-login"
-                        classNameLink="colorLinkForgot"
-                        classNameButton="login1-button helloLogin"
-
-                        comment={commentLogin}
-                        commentColor="commentColor"
-                    />
-                </div>
+  return (
+    <div className="Auth-form-container">
+      <form className="Auth-form" onSubmit={isRegistering ? handleRegister : handleLogin}>
+        <div className="Auth-form-content">
+          <h3 className="Auth-form-title">{isRegistering ? "Register" : "Sign In"}</h3>
+          {isRegistering && (
+            <div className="form-group mt-3">
+              <label>Name</label>
+              <input
+                type="text"
+                className="form-control mt-1"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
-        )
-    }
-}
+          )}
+          <div className="form-group mt-3">
+            <label>Email address</label>
+            <input
+              type="email"
+              className="form-control mt-1"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="form-group mt-3">
+            <label>Password</label>
+            <input
+              type="password"
+              className="form-control mt-1"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="d-grid gap-2 mt-3">
+            {isRegistering ? (
+              <button type="submit" className="btn btn-primary">
+                Register
+              </button>
+            ) : (
+              <button type="submit" className="btn btn-primary">
+                Sign In
+              </button>
+            )}
+            <button type="button" className="btn btn-link" onClick={toggleForm}>
+              {isRegistering ? "Sign In Instead" : "Register"}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+};
 
-Login.contextType = SessionContext;
+export default LoginForm;

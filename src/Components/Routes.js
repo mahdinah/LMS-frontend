@@ -1,10 +1,11 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-
+// import ProtectedRoute from "../utils/ProtectedRoute";
+// import Login from '../Pages/Login/Login';
 // import Header from './Header';
 import Sidebar from './Sidebar';
 
-import Home from '../Pages/Home/Home';
+
 import Profile from '../Pages/Admin_Panel/Profile';
 import Admin_Panel from '../Pages/Admin_Panel/Admin_Panel';
 
@@ -38,8 +39,8 @@ export default function Routes() {
             <Sidebar />
             <Switch>
 
-                <Route path="/home" component={Home} />
-
+             
+            {/* <Route path="/Login" component={Login} /> */}
                 <Route path="/profile" component={Profile} />
                 <Route path="/admin/panel" component={Admin_Panel} />
 
