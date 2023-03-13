@@ -5,7 +5,7 @@ import API from '../../../api';
 import { confirmAlert } from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 
-export default function List_Admin(props) {
+ function List_Admin(props) {
 
     const [admins, setAdmins] = useState([]);
 
@@ -99,3 +99,4 @@ export default function List_Admin(props) {
         </div>
     );
 }
+export default List_Admin;
