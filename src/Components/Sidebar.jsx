@@ -86,7 +86,7 @@ export default function Sidebar() {
                         </div>
                     </div>
 
-                    <a href="../" className="nav__link nav__logout">
+                    <a href="../Login" className="nav__link nav__logout">
                         <i className='bx bx-log-out bx-tada nav__icon'></i>
                         <span className="nav__name">Log Out</span>
                     </a>

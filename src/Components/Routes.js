@@ -38,9 +38,6 @@ export default function Routes() {
         <div>
             <Sidebar />
             <Switch>
-
-             
-            {/* <Route path="/Login" component={Login} /> */}
                 <Route path="/profile" component={Profile} />
                 <Route path="/admin/panel" component={Admin_Panel} />
 
