@@ -522,6 +522,10 @@ input[type='radio']:checked:after {
 }
 .Signin{
   color: #ffffff;
+
+}
+.contactus{
+  margin-left: 5px; /* add a 10px margin to the right of the span */
 }
 .Signin:hover{
   color: #000000;

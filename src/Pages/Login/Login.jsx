@@ -9,77 +9,43 @@ const LoginForm = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
-
-
-  function handleLogin(event) {
+  const [authenticated, setauthenticated] = useState(localStorage.getItem(localStorage.getItem("authenticated")|| false));
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(email, password); // log email and password values to console
-
-    if (!email || !password) {
-      setErrorMessage("Please fill in all required fields");
-      return;
-    }
-
-    API.post("/login", { email, password })
-      .then(({ data: { access_token } }) => {
-        localStorage.setItem("access_token", access_token, 1);
-        axios
-          .get(`http://127.0.0.1:8000/api/users?access_token=${access_token}`)
-          .then((response) => {
-            const user = response.data[0];
-            if (user.role === "admin") {
-              // Redirect to admin panel page
-              window.location.href = "/profile";
-            } else {
-              // Redirect to user dashboard page
-              window.location.href = "/dashboard";
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/login", {
+        email,
+        password,
       });
-  }
 
-  const handleRegister = (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("password", password);
+      const { access_token } = response.data;
+      localStorage.setItem("token", access_token);
 
-    if (!name || !email || !password) {
-      setErrorMessage("Please fill in all required fields");
-      return;
+      // Check if email and token exist
+      if (email && access_token) {
+        // Redirect to the admin panel
+      setauthenticated(true)
+      localStorage.setItem("authenticated", true);
+        alert("Welcome Back " + email);
+        window.location.href = "/admin/panel";
+      } else {
+        // Show an error message to the user
+        alert("Wrong email or password");
+      }
+    } catch (error) {
+      console.error(error.response.data.errors);
+      // Show an error message to the user
+      alert("Error:check your email or password");
     }
-
-    API.post("/register", formData)
-      .then((response) => {
-        // handle success response
-        console.log(response.data);
-        setSuccessMessage("Registration successful!");
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(err.message);
-      });
   };
-
-  const toggleForm = () => {
-    setIsRegistering(!isRegistering);
-  };
-
-
 
   return (
     <div className="Auth-form-container">
-      <form className="Auth-form" onSubmit={isRegistering ? handleRegister : handleLogin}>
+      <form className="Auth-form" onSubmit={handleSubmit}>
         <div className="Auth-form-content">
-          <h3 className="Auth-form-title">{isRegistering ? "Register" : "Sign In"}</h3>
+          <h3 className="Auth-form-title">
+            {isRegistering ? "Register" : "Sign In"}
+          </h3>
           {isRegistering && (
             <div className="form-group mt-3">
               <label>Name</label>
@@ -99,7 +65,8 @@ const LoginForm = () => {
               className="form-control mt-1"
               placeholder="Enter email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
+              required
             />
           </div>
           <div className="form-group mt-3">
@@ -109,7 +76,8 @@ const LoginForm = () => {
               className="form-control mt-1"
               placeholder="Enter password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(event) => setPassword(event.target.value)}
+              required
             />
           </div>
           {!isRegistering && (
@@ -118,29 +86,25 @@ const LoginForm = () => {
             </div>
           )}
           {errorMessage && <div className="error-message">{errorMessage}</div>}
-          {successMessage && <div className="success-message">{successMessage}</div>}
+          {successMessage && (
+            <div className="success-message">{successMessage}</div>
+          )}
           <button type="submit" className="btn btn-primary mt-3">
-            {isRegistering ? "Register" : <a href="./admin/panel" className="Signin">Sign In</a>}
+            {isRegistering ? "Register" : <a className="Signin">Sign In</a>}
           </button>
           {!isRegistering && (
-            <div className="register-link mt-3">
-              <span>Don't have an account?        </span>
-              <a href="#" onClick={toggleForm}> 
-                Register Now
-              </a>
-            </div>
-          )}
-          {isRegistering && (
-            <div className="login-link mt-3">
-              <span>Already have an account?        </span>
-              <a href="./Login" onClick={toggleForm}>
-                Sign In Now
-              </a>
+            <div className="contact-link mt-3">
+              <span>
+                Don't have an account?
+                <a className="contactus" href="">
+                  <b>Contact Us</b>
+                </a>
+              </span>
             </div>
           )}
         </div>
       </form>
     </div>
   );
-          }
-          export default LoginForm;  
+};
+export default LoginForm;
