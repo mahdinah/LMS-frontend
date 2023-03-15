@@ -10,7 +10,7 @@ import Gender_Radio from '../../../Components/Gender_Radio';
 import Classroom_List from '../../../Components/Classrooms_List';
 import Classroom_Section from '../../../Components/Classroom_Section';
 
-export default function Create_Student(props) {
+ function Create_Student(props) {
 
     const [state, updateState] = useState({
         fname: "",
@@ -39,12 +39,12 @@ export default function Create_Student(props) {
         }));
     }
 
-    const handleChange = e => {
+    const handleChange = (e) => {
         let { name, value } = e.target;
         setState({ [name]: value });
     }
 
-    const handleSave = async e => {
+    const handleSave = async (e) => {
         e.preventDefault();
         let reqBody = state;
         await API.post(`student`, reqBody);
@@ -224,4 +224,4 @@ export default function Create_Student(props) {
             </form>
         </div>
     );
-}
+}export default Create_Student;
