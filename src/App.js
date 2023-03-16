@@ -1,15 +1,36 @@
-import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import "./App.css";
-import LoginForm from "./Pages//Login/Login"
-import Routes from "./Components/Routes";
+import Login from './Pages/Login/Login';
+// import Register from './Pages/Login/Register';
+import Profile from './Pages/Admin_Panel/Profile';
+import Routes from './Components/Routes'
 
-function App() {
+const App = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setLoggedIn(false);
+    }
+  }, [location]);
+
   return (
-    <Router>
-      <LoginForm />
-    </Router>
+    <Switch>
+      <Route exact path="/">
+        <Redirect to="/login" />
+      </Route>
+      <Route path="/login">
+        <Login setLoggedIn={setLoggedIn} />
+      </Route>
+      <Routes>
+        <Route path="/profile">
+          <Profile />      
+        </Route>
+      </Routes>
+    </Switch>
   );
-}
+};
 
 export default App;
