@@ -1,6 +1,104 @@
+.App {
+  background-color: white;
+
+}
+
+.Piechart1{
+  display: flex;
+  flex-direction: column;
+}
+.Piechart2{
+  display: flex;
+  flex-direction: column;
+}
+.Piecharts{
+  display: flex;
+}
+.container-lg{
+  background-color:rgba(254, 254, 254, 0.8);
+  border-radius: 25px;
+  max-width: 1400px;
+ padding: 50px;
+}
+.Auth-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+margin-left: -100px;
+margin-top: -100px;
+  width: 1922px;
+  height:1005px;
+  background-image: url("./Images/loginpage.jpg");
+  
+}
+
+.Auth-form {
+      -webkit-box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+      box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+      border-radius: 15px;
+      background-color: rgb(192, 174, 211, .70);
+      padding: 20px;
+}
+.mt-1{
+  width:100%;
+}
+
+.Auth-form-title {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 24px;
+  color: rgb(34, 34, 34);
+  font-weight: 800;
+}
+@media (max-width: 768px) {
+  .Auth-form-container {
+    margin-left: 0;
+    margin-top: 0;
+    width: 100%;
+      background-image: url("./Images/loginpage.jpg");
+  }
+  
+  .Auth-form {
+    width: 80%;
+    margin: 0 auto;
+    box-shadow: none;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 0;
+    height: auto;
+    opacity: 100%;
+    background-color: rgb(192, 174, 211);
+  }
+  
+  .Auth-form-content {
+    padding-left: 5%;
+    padding-right: 5%;
+
+  }
+  
+  .Auth-form-title {
+    font-size: 20px;
+  }
+}
+
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+.Backimg{
+  background-color: #ededf6;
+  margin-left: 130px;
+  height:100%;
+  border-radius: 10px;
+}
+
 *:focus {
   outline: none;
+  
 }
+
 
 .table-wrapper {
   width: 90%;
@@ -164,6 +262,10 @@ table.table td .add {
 
 .divaddadmin label {
   color: black;
+}
+.divaddadmin,.form{
+  background-color: rgba(254, 254, 254, 0.8);
+
 }
 
 .canceladdadmin {
@@ -418,16 +520,26 @@ input[type='radio']:checked:after {
 #file-input {
   display: none;
 }
+.Signin{
+  color: #ffffff;
+}
+.Signin:hover{
+  color: #000000;
+}
+.adminweclome{
+  cursor: pointer;
+}
 
 .file-field {
   position: absolute;
-  left: 10%;
+  left: 20%;
 }
 
 .specpic {
   border: 1px solid gray;
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
+
 }
 
 @media screen and (max-width: 1000px) {

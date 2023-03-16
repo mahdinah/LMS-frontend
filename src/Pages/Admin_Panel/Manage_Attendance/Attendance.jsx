@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Attendance(props) {
     return (
-        <div>
+        <div className='divaddadmin'>
             <div><h2 className="listadmintitle">LIST OF STUDENTS</h2></div>
             <div className="flexflowdiv">
                 <button

@@ -1,100 +1,146 @@
-import { Component } from 'react'
-import SessionContext from '../../components/session/SessionContext'
-import LoginComponent from '../../components/LoginComponent'
-import { setCookie } from '../../cookie'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import API from "../../api";
 
-export default class Login extends Component {
+const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-    state = {
-        name: "",
-        password: "",
-        commentLogin: ""
+
+
+  function handleLogin(event) {
+    event.preventDefault();
+    console.log(email, password); // log email and password values to console
+
+    if (!email || !password) {
+      setErrorMessage("Please fill in all required fields");
+      return;
     }
 
-    handleLogin = async (event) => {
-        event.preventDefault();
-
-        const { name, password, commentLogin } = this.state;
-        const { actions: { updateSession } } = this.context;
-        try {
-            const url = 'http://localhost:8000/login';
-            const body = JSON.stringify({ name, password });
-            const headers = { 'Content-Type': 'application/json' };
-
-            const response = await fetch(url, { method: "POST", headers, body });
-            const answer = await response.json();
-
-            if (answer.success) {
-                setCookie('id', answer.result.id, 30);
-                setCookie('token', answer.result.token, 30);
-                if (answer.result.RoleID === 0) {
-                    setCookie('RoleID', answer.result.RoleID.toString(), 30)
-                } else if (answer.result.RoleID === 1) {
-                    setCookie('RoleID', answer.result.RoleID.toString(), 30)
-                }
-                updateSession({ user: answer.result })
+    API.post("/login", { email, password })
+      .then(({ data: { access_token } }) => {
+        localStorage.setItem("access_token", access_token, 1);
+        axios
+          .get(`http://127.0.0.1:8000/api/users?access_token=${access_token}`)
+          .then((response) => {
+            const user = response.data[0];
+            if (user.role === "admin") {
+              // Redirect to admin panel page
+              window.location.href = "/profile";
             } else {
-
-                this.setState({ error_message: answer.message, password: "", commentLogin: "Incorrect Username or Password" });
+              // Redirect to user dashboard page
+              window.location.href = "/dashboard";
             }
-        } catch (err) {
-            this.setState({ error_message: err.message, password: "", commentLogin: "Incorrect Username or Password" });
-        }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const handleRegister = (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+
+    if (!name || !email || !password) {
+      setErrorMessage("Please fill in all required fields");
+      return;
     }
 
-    handleChange = (e) => {
-        let { name, value } = e.target;
-        this.setState({ [name]: value });
-    }
+    API.post("/register", formData)
+      .then((response) => {
+        // handle success response
+        console.log(response.data);
+        setSuccessMessage("Registration successful!");
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.message);
+      });
+  };
 
-    nextPath(path) {
-        this.props.history.push(path);
-    }
+  const toggleForm = () => {
+    setIsRegistering(!isRegistering);
+  };
 
-    render() {
-        let { name, password, commentLogin } = this.state;
-        console.log(commentLogin)
-        return (
-            <div className="container">
-                <div className="loginHeader">
-                    <button
-                        className="home-button L-Button"
-                        onClick={() => this.nextPath(`/`)}
-                    >
-                        <i className="fa fa-home colordelete"></i> Home
-                    </button>
-                </div>
-                <div className="diccs">
-                    <span>Welcome to Al Manara School Registration System</span>
-                    <br /><br /><br />
-                    <span>LOGIN</span>
-                </div>
-                <div className="loginRect">
-                    <LoginComponent
-                        typeButton="submit"
-                        onSubmit={this.handleLogin}
 
-                        placeholderUser="Username"
-                        typeUser="text"
-                        nameUser="name"
-                        valueUser={name}
-                        placeholderPass="Password"
-                        typePass="password"
-                        namePass="password"
-                        valuePass={password}
-                        onChange={this.handleChange}
 
-                        className="input-login"
-                        classNameLink="colorLinkForgot"
-                        classNameButton="login1-button helloLogin"
-
-                        comment={commentLogin}
-                        commentColor="commentColor"
-                    />
-                </div>
+  return (
+    <div className="Auth-form-container">
+      <form className="Auth-form" onSubmit={isRegistering ? handleRegister : handleLogin}>
+        <div className="Auth-form-content">
+          <h3 className="Auth-form-title">{isRegistering ? "Register" : "Sign In"}</h3>
+          {isRegistering && (
+            <div className="form-group mt-3">
+              <label>Name</label>
+              <input
+                type="text"
+                className="form-control mt-1"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
-        )
-    }
-}
-
-Login.contextType = SessionContext;
+          )}
+          <div className="form-group mt-3">
+            <label>Email address</label>
+            <input
+              type="email"
+              className="form-control mt-1"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="form-group mt-3">
+            <label>Password</label>
+            <input
+              type="password"
+              className="form-control mt-1"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          {!isRegistering && (
+            <div className="forgot-password">
+              <a href="./">Forgot Password?</a>
+            </div>
+          )}
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          {successMessage && <div className="success-message">{successMessage}</div>}
+          <button type="submit" className="btn btn-primary mt-3">
+            {isRegistering ? "Register" : <a href="./admin/panel" className="Signin">Sign In</a>}
+          </button>
+          {!isRegistering && (
+            <div className="register-link mt-3">
+              <span>Don't have an account?        </span>
+              <a href="#" onClick={toggleForm}> 
+                Register Now
+              </a>
+            </div>
+          )}
+          {isRegistering && (
+            <div className="login-link mt-3">
+              <span>Already have an account?        </span>
+              <a href="./Login" onClick={toggleForm}>
+                Sign In Now
+              </a>
+            </div>
+          )}
+        </div>
+      </form>
+    </div>
+  );
+          }
+          export default LoginForm;  
