@@ -12,6 +12,7 @@ export default function List_Student(props) {
     const [state, updateState] = useState({
         students: [],
         name: "",
+        pnumber: "",
         classroom_id: "",
         section_id: "",
         gender: ""
@@ -31,6 +32,7 @@ export default function List_Student(props) {
 
     const reqBody = {
         fname: state.name,
+        pnumber: state.pnumber,
         classroom_id: state.classroom_id,
         section_id: state.section_id,
         gender: state.gender
@@ -41,21 +43,24 @@ export default function List_Student(props) {
             .then(res => {
                 let result = res.data.data;
 
-                if (state.name != "") {
+                if (state.name !== "") {
                     result = result.filter(r =>
-                        (((r.fname + " " + r.lname).slice(0, state.name.length)).toLowerCase() == (state.name).toLowerCase())
+                        (((r.fname + " " + r.lname).slice(0, state.name.length)).toLowerCase() === (state.name).toLowerCase())
                         ||
-                        ((r.lname.slice(0, state.name.length)).toLowerCase() == (state.name).toLowerCase())
+                        ((r.lname.slice(0, state.name.length)).toLowerCase() === (state.name).toLowerCase())
                     );
                 }
-                if (state.classroom_id != "") {
-                    result = result.filter(r => r.classroom_id == state.classroom_id);
+                if (state.pnumber !== "") {
+                    result = result.filter(r => r.pnumber.toLowerCase().startsWith(state.pnumber.toLowerCase()));
                 }
-                if (state.section_id != "") {
-                    result = result.filter(r => r.section_id == state.section_id);
+                if (state.classroom_id !== "") {
+                    result = result.filter(r => r.classroom_id === state.classroom_id);
                 }
-                if (state.gender != "") {
-                    result = result.filter(r => r.gender == state.gender);
+                if (state.section_id !== "") {
+                    result = result.filter(r => r.section_id === state.section_id);
+                }
+                if (state.gender !== "") {
+                    result = result.filter(r => r.gender === state.gender);
                 }
 
                 setState({ students: result });
@@ -65,7 +70,6 @@ export default function List_Student(props) {
     useEffect(() => {
         fetchdata(reqBody);
     }, [JSON.stringify(reqBody)]);
-
     return (
         <div className="container-lg">
             <div className="table-title">

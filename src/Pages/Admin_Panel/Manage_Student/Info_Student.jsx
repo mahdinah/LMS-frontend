@@ -209,6 +209,12 @@ export default function Info_Classroom(props) {
                             onClick={() => props.history.push(`/student/edit/${state.id}`)}
                             className="submitaddadmin topright"
                         />
+                          <IN
+                            type="button"
+                            value="Cancel"
+                            onClick={() => props.history.push(`/student/list/`)}
+                            className="submitcanceledit topright3"
+                        />
 
                 </div>
             </form>

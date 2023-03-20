@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../../api';
 
+import IN from '../../../Components/Input';
 import Attendance_List from '../../../Components/Attendance_List';
 import Classroom_List from '../../../Components/Classrooms_List';
 import Classroom_Section from '../../../Components/Classroom_Section';
