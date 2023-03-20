@@ -3,7 +3,7 @@ import React from 'react';
 export default function Attendance(props) {
     return (
         <div className='divaddadmin'>
-            <div><h2 className="listadmintitle">LIST OF STUDENTS</h2></div>
+            <div><h2 className="listadmintitle">STUDENTS ATTENDENCE</h2></div>
             <div className="flexflowdiv">
                 <button
                     onClick={() => props.history.push('/attendance/old')}

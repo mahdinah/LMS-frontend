@@ -1,6 +1,9 @@
   import React, { useState, useEffect } from "react";
   import axios from "axios";
   import API from "../../api";
+  import Swal from "sweetalert2";
+import { Height } from "@material-ui/icons";
+
   
 
   const LoginForm = () => {
@@ -11,6 +14,34 @@
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [authenticated, setauthenticated] = useState(localStorage.getItem(localStorage.getItem("authenticated")|| false));
+    
+    const loggedinsuccess=()=>{
+       Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Welcome Back '+email,
+        showConfirmButton: false,
+        timer: 1500,
+      })
+    };
+    const loggederror=()=>{
+      Swal.fire({
+       position: 'top-end',
+       icon: 'error',
+       title: 'Check your email or password',
+       showConfirmButton: false,
+       timer: 1500
+     })
+   };
+//    const loggedinsuccess=()=>{
+//     Swal.fire({
+//      position: 'top-end',
+//      icon: 'success',
+//      title: 'Welcome Back '+email,
+//      showConfirmButton: false,
+//      timer: 1500
+//    })
+//  };
     const handleSubmit = async (event) => {
       event.preventDefault();
       try {
@@ -24,21 +55,21 @@
 
         // Check if email and token exist
         if (email && access_token) {
-          // Redirect to the admin panel
+          // Redirect to the studen panel(attendece page)
         setauthenticated(true)
         localStorage.setItem("authenticated", true);
-          alert("Welcome Back " + email);
+        loggedinsuccess();
           setTimeout(() => {
-            window.location.href = "/admin/panel";
-          }, 1000);
+            window.location.href = "/attendance/create";
+          }, 500);
         } else {
           // Show an error message to the user
-          alert("Wrong email or password");
+          loggederror();
         }
       } catch (error) {
         console.error(error.response.data.errors);
         // Show an error message to the user
-        alert("Error:check your email or password");
+        loggederror();
       }
     };
 
