@@ -69,6 +69,7 @@ export default function CreateAttendance() {
   const [description, setDescription] = useState("");
   const [studentId, setStudentId] = useState("");
   const [sectionId, setSectionId] = useState("");
+  const sectionIds=state.section_id;
   const attendsuccess = () => {
     Swal.fire({
       position: "top-end",
@@ -90,7 +91,7 @@ export default function CreateAttendance() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!description || !studentId || !sectionId) {
+    if (!description || !studentId || !sectionIds) {
       // check if all data fields are entered
       attenderror(); // call attenderror function to display error message
       return;
@@ -99,7 +100,7 @@ export default function CreateAttendance() {
     const data = {
       description: description,
       student_id: studentId,
-      section_id: sectionId,
+      section_id: sectionIds,
     };
 
     await API.post("/attendance", data)
@@ -134,6 +135,22 @@ export default function CreateAttendance() {
     <div className="container-lg">
       <h2 className="listadmintitle">Create Attendance</h2>
       <form className="attform" onSubmit={handleSubmit}>
+      <div className="divrowselectlisto">
+                    <Classroom_List
+                        name="classroom_id"
+                        id={state.classroom_id}
+                        onChange={handleChangee}
+                        className="filterClass1"
+                    />
+
+                    <Classroom_Section
+                        name="section_id"
+                        id={state.classroom_id}
+                        idsec={state.section_id}
+                        onChange={handleChangee}
+                        className="filterClass1"
+                    />
+                </div>
         <div>
           <label className="listo">Description: </label>
           <select
@@ -146,22 +163,7 @@ export default function CreateAttendance() {
             <option value="Late">Late</option>
             <option value="Absent">Absent</option>
           </select>
-          <div className="divrowselect">
-                    <Classroom_List
-                        name="classroom_id"
-                        id={state.classroom_id}
-                        onChange={handleChangee}
-                        className="filterClass"
-                    />
 
-                    <Classroom_Section
-                        name="section_id"
-                        id={state.classroom_id}
-                        idsec={state.section_id}
-                        onChange={handleChangee}
-                        className="filterClass"
-                    />
-                </div>
 
         </div>
         <div>
@@ -180,6 +182,7 @@ export default function CreateAttendance() {
             type="text"
             name="sectionId"
             onChange={handleChange}
+            value={sectionIds}
           />
         </div>
         <button className="bootandence" type="submit">
