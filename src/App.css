@@ -52,11 +52,14 @@ display: flex;
 }
 
 .selectodesc {
+  background-color: #FFFFFF;
   padding: 5px;
-  border-radius: 5px;
+  border-radius: 10px;
   border: none;
   font-size: 16px;
   margin-bottom: 20px;
+  margin-TOP: 20px;
+width: 320px;
 }
 .bootandence{
   background-color: #4CAF50;
@@ -219,9 +222,13 @@ label {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+
 }
 
 .filterClass:hover {
+  background-color: rgb(15, 159, 255);
+}
+.filterClass1:hover {
   background-color: rgb(15, 159, 255);
 }
 
@@ -514,6 +521,24 @@ table.table td .add {
   display: flex;
   flex-flow: row;
   justify-content: space-between;
+}
+.divrowselectlisto{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-right: -600px;
+  gap: 10px;
+}
+.filterClass1{
+  background-color: rgb(71, 181, 255);
+  color: white;
+  padding: 5px 5px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100px;
+
 }
 
 @media screen and (max-width: 900px) {

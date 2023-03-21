@@ -1,5 +1,7 @@
 import React from "react";
+
 import { Switch, Route, Redirect } from "react-router-dom";
+
 // import ProtectedRoute from "../utils/ProtectedRoute";
 // import Login from '../Pages/Login/Login';
 // import Header from './Header';
@@ -28,7 +30,9 @@ import Edit_Section from "../Pages/Admin_Panel/Manage_Section/Edit_Section";
 import Attendance from "../Pages/Admin_Panel/Manage_Attendance/Attendance";
 import Today_Attendance from "../Pages/Admin_Panel/Manage_Attendance/Today_Attendance";
 import Old_Attendance from "../Pages/Admin_Panel/Manage_Attendance/Old_Attendance";
+
 import CreateAttendance from "../Pages/Admin_Panel/Manage_Attendance/Create-Attendence";
+
 
 import Personal_Statistics from "../Pages/Admin_Panel/Statistics/Personal_Statistics";
 import Total_Statistics from "../Pages/Admin_Panel/Statistics/Total_Statistics";
@@ -37,7 +41,9 @@ export default function Routes() {
   return (
     <div>
       <Sidebar />
+
       <Switch>
+
         <Route path="/profile" component={Profile} />
         <Route path="/admin/panel" component={Admin_Panel} />
 
@@ -64,7 +70,10 @@ export default function Routes() {
 
         <Route path="/statistics/personal" component={Personal_Statistics} />
         <Route path="/statistics/total" component={Total_Statistics} />
+
       </Switch>
+
+
     </div>
   );
 }

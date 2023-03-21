@@ -42,36 +42,46 @@ import { Height } from "@material-ui/icons";
 //      timer: 1500
 //    })
 //  };
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-      try {
-        const response = await axios.post("http://127.0.0.1:8000/api/login", {
-          email,
-          password,
-        });
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  try {
+    const response = await axios.post("http://127.0.0.1:8000/api/login", {
+      email,
+      password,
+    });
 
-        const { access_token } = response.data;
-        localStorage.setItem("token", access_token);
+    const { access_token } = response.data;
+    localStorage.setItem("token", access_token);
 
-        // Check if email and token exist
-        if (email && access_token) {
-          // Redirect to the studen panel(attendece page)
+    // Check if email and token exist
+    if (email && access_token) {
+      // Redirect to the appropriate page based on the email
+      if (email == "student@gmail.com") {
         setauthenticated(true)
         localStorage.setItem("authenticated", true);
         loggedinsuccess();
-          setTimeout(() => {
-            window.location.href = "/attendance/create";
-          }, 500);
-        } else {
-          // Show an error message to the user
-          loggederror();
-        }
-      } catch (error) {
-        console.error(error.response.data.errors);
-        // Show an error message to the user
-        loggederror();
+        setTimeout(() => {
+          window.location.href = "/attendance/create";
+        }, 500);
+      } else {
+        setauthenticated(true)
+        localStorage.setItem("authenticated", true);
+        loggedinsuccess();
+        setTimeout(() => {
+          window.location.href = "/admin/panel";
+        }, 500);
       }
-    };
+    } else {
+      // Show an error message to the user
+      loggederror();
+    }
+  } catch (error) {
+    console.error(error.response.data.errors);
+    // Show an error message to the user
+    loggederror();
+  }
+};
+
 
     return (
       <div className="Auth-form-container">

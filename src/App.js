@@ -17,17 +17,18 @@ const App = () => {
   }, [location]);
 
   return (
-    <Switch>
-
-      <Route path="/login">
-        <Login setLoggedIn={setLoggedIn} />
-      </Route>
-      <Route path="/attendance/create">
-        <CreateAttendance />
-      </Route>
-      <Routes />
- 
-    </Switch>
+<Switch>
+  <Route exact path="/">
+    <Redirect to="/login" />
+  </Route>
+  <Route path="/login">
+    <Login setLoggedIn={setLoggedIn} />
+  </Route>
+  <Route path="/attendance/create">
+    <CreateAttendance />
+  </Route>
+  <Routes />
+</Switch>
   );
 };
 
