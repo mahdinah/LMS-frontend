@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import API from '../../../api';
-
+import Swal from 'sweetalert2';
 import Unknown from '../../../Images/Unknown_person.jpg';
 
 import TR from '../../../Components/TR';
@@ -10,7 +10,42 @@ import Gender_Radio from '../../../Components/Gender_Radio';
 import Classroom_List from '../../../Components/Classrooms_List';
 import Classroom_Section from '../../../Components/Classroom_Section';
 
-export default function Create_Student(props) {
+
+
+ function Create_Student(props) {
+    const addstudsuccess = () => {
+        let timerInterval
+        Swal.fire({
+            title: 'Auto close alert!',
+            html: 'I will close in <b></b> milliseconds.',
+            timer: 500,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading()
+              const b = Swal.getHtmlContainer().querySelector('b')
+              timerInterval = setInterval(() => {
+                b.textContent = Swal.getTimerLeft()
+              }, 100)
+            },
+            willClose: () => {
+              clearInterval(timerInterval)
+            }
+          }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              console.log('I was closed by the timer')
+            }
+          })
+      };
+      const studadderror = () => {
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "Error, Missing Student Informations",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      };
 
     const [state, updateState] = useState({
         fname: "",
@@ -39,17 +74,33 @@ export default function Create_Student(props) {
         }));
     }
 
-    const handleChange = e => {
+    const handleChange = (e) => {
         let { name, value } = e.target;
         setState({ [name]: value });
     }
 
-    const handleSave = async e => {
+    const handleSave = async (e) => {
         e.preventDefault();
-        let reqBody = state;
-        await API.post(`student`, reqBody);
-        await props.history.push(`/student/list`);
-    }
+        
+        try {
+          const response = await API.post(`student`, state);
+          
+          if (response.status !== 200 ) {
+            throw new Error("Failed to save student data");
+          } 
+          addstudsuccess();
+          setTimeout(() => {
+            props.history.push(`/student/list`);
+          }, 500);
+         
+        
+          
+        } catch (err) {
+          studadderror();
+          console.error(err);
+        }
+      }
+      
 
     const changeImage = (e) => {
         let files = e.target.files || e.dataTransfer.files;
@@ -224,4 +275,4 @@ export default function Create_Student(props) {
             </form>
         </div>
     );
-}
+}export default Create_Student;

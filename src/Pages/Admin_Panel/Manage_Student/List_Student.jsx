@@ -17,6 +17,7 @@ export default function List_Student(props) {
         section_id: "",
         gender: ""
     });
+    
 
     const setState = (nextState) => {
         updateState(prevState => ({

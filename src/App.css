@@ -30,8 +30,8 @@
   align-items: center;
 margin-left: -100px;
 margin-top: -100px;
-  width: 1922px;
-  height:1005px;
+  width: 1900px;
+  height:980px;
   background-image: url("./Images/loginpage.jpg");
   
 }
@@ -114,12 +114,16 @@ width: 320px;
     box-shadow: none;
     padding-top: 20px;
     padding-bottom: 20px;
-    border-radius: 0;
-    height: auto;
-    opacity: 100%;
-    background-color: rgb(192, 174, 211);
+    border-radius: 10px;
+    height: 40%;
+    background-color: rgb(192, 174, 211,0.7);
   }
-  
+  .btn{
+
+width: 100px;
+  }
+
+
   .Auth-form-content {
     padding-left: 5%;
     padding-right: 5%;
@@ -682,6 +686,7 @@ input[type='radio']:checked:after {
   .topright3{
     margin-top:130px;
   }
+
 }
 
 .flexRowStu {
@@ -744,6 +749,18 @@ input[type='radio']:checked:after {
   }
   .flexflowdiv {
     width: 200px;
+  }
+  .divrowselectlisto{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+margin-right: 10px;
+    gap: 10px;
+  }
+  .filterClass1{
+    background-color: rgb(71, 181, 255);
+
+  
   }
 }
 
